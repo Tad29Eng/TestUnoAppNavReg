@@ -21,14 +21,14 @@
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal">
 
-            <Button Content="Show LeftFirst"
-                    Command="{Binding ShowLeftFirstCommandAsync}"
+            <Button Content="Show First"
+                    Command="{Binding ShowFirstCommandAsync}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Margin="5" /> "
             
-            <Button Content="Show LeftSecond"
-                    Command="{Binding ShowLeftSecondCommandAsync}"
+            <Button Content="Show Second"
+                    Command="{Binding ShowSecondCommandAsync}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Margin="5" /> "

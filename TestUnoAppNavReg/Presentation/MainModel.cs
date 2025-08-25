@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Messaging;
-using TestUnoAppNavReg.Helpers;
 using TestUnoAppNavReg.Messages;
 
 namespace TestUnoAppNavReg.Presentation;
@@ -43,9 +42,9 @@ public partial record MainModel
             qualifier: Qualifiers.Nested);
     }
 
-    public async ValueTask ShowLeftFirstCommandAsync(CancellationToken ct)
+    public async ValueTask ShowFirstCommandAsync(CancellationToken ct)
     {
-        Logger.LogInformation("Main.ShowLeftFirstCommandAsync");
+        Logger.LogInformation("Main.ShowFirstCommandAsync");
 
         //_ = await Navigator.NavigateRouteAsync(
         //    this,
@@ -69,9 +68,9 @@ public partial record MainModel
             cancellation: ct);
     }
 
-    public async ValueTask ShowLeftSecondCommandAsync(CancellationToken ct)
+    public async ValueTask ShowSecondCommandAsync(CancellationToken ct)
     {
-        Logger.LogInformation("Main.ShowLeftSecondCommandAsync");
+        Logger.LogInformation("Main.ShowSecondCommandAsync");
 
         //_ = await Navigator.NavigateRouteAsync(
         //    this, 
