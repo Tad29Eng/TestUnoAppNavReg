@@ -43,7 +43,7 @@ public partial record LeftFirstModel(
     {
         Logger.LogInformation("LeftFirstModel.ShowDetailsCommandAsync");
 
-        var selectedEntity = await SelectedEntity;  
+        var selectedEntity = await SelectedEntity;
         Messenger.Send(new LeftFirstShowDetailMessage(selectedEntity));
     }
 }

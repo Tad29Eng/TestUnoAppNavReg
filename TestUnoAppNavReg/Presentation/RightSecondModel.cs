@@ -24,9 +24,9 @@ public partial record RightSecondModel(
             return ImmutableList<EntityProperty>.Empty;
 
         var items = new List<EntityProperty>() {
-            new ($"{Entity.Name} - Property1"),
-            new ($"{Entity.Name} - Property2"),
-            new ($"{Entity.Name} - Property3")
+            new ($"{Entity.Name} - Property1", TypeName : "First"),
+            new ($"{Entity.Name} - Property2", TypeName : "Second"),
+            new ($"{Entity.Name} - Property3", TypeName : "First")
         };
 
         return await ValueTask.FromResult(items.ToImmutableList());

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Windowing;
 using TestUnoAppNavReg.Helpers;
 using Uno.Resizetizer;
 
@@ -76,6 +77,10 @@ public partial class App : Application
 #endif
         MainWindow.SetWindowIcon();
 
+        //// Maximize the window on launch
+        //var presenter = (OverlappedPresenter)MainWindow.AppWindow.Presenter;
+        //presenter.Maximize();
+
         Host = await builder.NavigateAsync<Shell>();
     }
 
@@ -87,7 +92,9 @@ public partial class App : Application
             new DataViewMap<LeftFirstPage, LeftFirstModel, DataPanel>(),
             new DataViewMap<LeftSecondPage, LeftSecondModel, DataPanel>(),
             new DataViewMap<RightFirstPage, RightFirstModel, Entity>(),
-            new DataViewMap<RightFirstPage, RightSecondModel, Entity>()
+            new DataViewMap<RightSecondPage, RightSecondModel, Entity>(),
+            new DataViewMap<RightFirstFirstPage, RightFirstFirstModel, EntityProperty>(),
+            new DataViewMap<RightFirstSecondPage, RightFirstSecondModel, EntityProperty>()
         );
 
         routes.Register(
@@ -109,7 +116,11 @@ public partial class App : Application
                             //new (Helpers.NavigationHelper.RightFirstRouteName, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true),
                             //new (Helpers.NavigationHelper.RightSecondRouteName, View: views.FindByViewModel<RightSecondModel>())
                             
-                            new (NavigationHelper.RightFirstRoutePath, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true),
+                            new (NavigationHelper.RightFirstRoutePath, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true,
+                            Nested:[
+                                new (NavigationHelper.RightFirstFirstRoutePath, View: views.FindByViewModel<RightFirstFirstModel>()),
+                                new (NavigationHelper.RightFirstSecondRoutePath, View: views.FindByViewModel<RightFirstSecondModel>())
+                            ]),
                             new (NavigationHelper.RightSecondRoutePath, View: views.FindByViewModel<RightSecondModel>())
                         ])
                     ])

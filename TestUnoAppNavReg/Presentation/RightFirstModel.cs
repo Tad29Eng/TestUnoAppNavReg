@@ -5,6 +5,7 @@ namespace TestUnoAppNavReg.Presentation;
 
 public partial record RightFirstModel(
     Entity Entity,
+    INavigator Navigator,
     IMessenger Messenger,
     ILogger<LeftFirstModel> Logger)
 {
@@ -13,9 +14,9 @@ public partial record RightFirstModel(
 
     public IListFeed<EntityProperty> Items =>
         ListFeed<EntityProperty>.Async(LoadItemsAsync)
-        .Selection(SelectedEntity);
+        .Selection(SelectedEntityProperty);
 
-    public IState<EntityProperty> SelectedEntity => State<EntityProperty>.Empty(this)
+    public IState<EntityProperty> SelectedEntityProperty => State<EntityProperty>.Empty(this)
         .ForEach(action: SelectionChanged);
 
     private async ValueTask<IImmutableList<EntityProperty>> LoadItemsAsync(CancellationToken ct)
@@ -24,10 +25,13 @@ public partial record RightFirstModel(
             return ImmutableList<EntityProperty>.Empty;
 
         var items = new List<EntityProperty>() {
-            new ($"{Entity.Name} - Property1"),
-            new ($"{Entity.Name} - Property2"),
-            new ($"{Entity.Name} - Property3")
+            new (Name: $"{Entity.Name} - Property1", TypeName:"First" ),
+            new ($"{Entity.Name} - Property2", TypeName:"Second"),
+            new ($"{Entity.Name} - Property3", TypeName:"First")
         };
+
+        var firstSelectedEntityProperty = items.FirstOrDefault() ?? EntityProperty.Empty;
+        await SelectedEntityProperty.UpdateAsync(old => firstSelectedEntityProperty, ct);
 
         return await ValueTask.FromResult(items.ToImmutableList());
     }
@@ -39,8 +43,16 @@ public partial record RightFirstModel(
         if (selectedProperty == null)
             return;
 
-        Messenger.Send(new RightFirstShowDetailMessage(selectedProperty));
+        if (selectedProperty.TypeName == "Second") {
+            _ = await Navigator.NavigateViewModelAsync<RightFirstSecondModel>(
+               this,
+               data: selectedProperty,
+               qualifier: Qualifiers.Nested);
+        } else {
+            _ = await Navigator.NavigateViewModelAsync<RightFirstFirstModel>(
+                this,
+                data: selectedProperty,
+                qualifier: Qualifiers.Nested);
+        }
     }
-
-
 }
