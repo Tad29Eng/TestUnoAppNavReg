@@ -3,13 +3,17 @@ using TestUnoAppNavReg.Messages;
 
 namespace TestUnoAppNavReg.Presentation;
 
-public partial record LeftFirstModel(
-    DataPanel Panel,
-    IMessenger Messenger,
-    ILogger<LeftFirstModel> Logger)
+public partial record LeftFirstModel
 {
+
+    private DataPanel Panel { get; }
+    
+    private IMessenger Messenger { get; }
+   
+    private ILogger<LeftFirstModel> Logger { get; }
+
     public IState<string> Title =>
-        State<string>.Value(this, () => $"LeftFirst - {Panel.Name}");
+        State<string>.Value(this, () => $"LeftFirst - {Panel?.Name ?? "Empty"}");
 
     public IListFeed<Entity> Items =>
         ListFeed<Entity>.Async(LoadItemsAsync)
@@ -17,6 +21,16 @@ public partial record LeftFirstModel(
 
     public IState<Entity> SelectedEntity => State<Entity>.Empty(this)
         .ForEach(action: SelectionChanged);
+
+    public LeftFirstModel(
+        DataPanel panel,
+        IMessenger messenger,
+        ILogger<LeftFirstModel> logger)
+    {
+        Panel = panel;
+        Messenger = messenger;
+        Logger = logger;
+    }
 
     private async ValueTask<IImmutableList<Entity>> LoadItemsAsync(CancellationToken ct)
     {

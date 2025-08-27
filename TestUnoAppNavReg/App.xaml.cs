@@ -103,24 +103,33 @@ public partial class App : Application
                 [
                     new (NavigationHelper.MainRouteName, View: views.FindByViewModel<MainModel>(), IsDefault:true,
                     Nested:[
+
+                        //new ($"LeftFirst", View: views.FindByViewModel<LeftFirstModel>(), IsDefault:true),
+                        //new (NavigationHelper.LeftSecondRouteName, View: views.FindByViewModel<LeftSecondModel>()),
+
                         new (NavigationHelper.LeftRegionName,
                         Nested: [
-                            //new (Helpers.NavigationHelper.LeftFirstRouteName, View: views.FindByViewModel<LeftFirstModel>(), IsDefault:true),
-                            //new (Helpers.NavigationHelper.LeftSecondRouteName, View: views.FindByViewModel<LeftSecondModel>())
+                            //new (NavigationHelper.LeftFirstRouteName, View: views.FindByViewModel<LeftFirstModel>(), IsDefault:true),
+                            //new (NavigationHelper.LeftSecondRouteName, View: views.FindByViewModel<LeftSecondModel>())
 
                             new (NavigationHelper.LeftFirstRoutePath, View: views.FindByViewModel<LeftFirstModel>(), IsDefault:true),
                             new (NavigationHelper.LeftSecondRoutePath, View: views.FindByViewModel<LeftSecondModel>())
                         ]),
+
                         new (NavigationHelper.RightRegionName,
                         Nested:[
-                            //new (Helpers.NavigationHelper.RightFirstRouteName, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true),
-                            //new (Helpers.NavigationHelper.RightSecondRouteName, View: views.FindByViewModel<RightSecondModel>())
+                            //new (NavigationHelper.RightFirstRouteName, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true),
+                            //new (NavigationHelper.RightSecondRouteName, View: views.FindByViewModel<RightSecondModel>())
                             
                             new (NavigationHelper.RightFirstRoutePath, View: views.FindByViewModel<RightFirstModel>(), IsDefault:true,
                             Nested:[
-                                new (NavigationHelper.RightFirstFirstRoutePath, View: views.FindByViewModel<RightFirstFirstModel>()),
-                                new (NavigationHelper.RightFirstSecondRoutePath, View: views.FindByViewModel<RightFirstSecondModel>())
+                                new (NavigationHelper.RightFirstBottomRegionName,
+                                Nested:[
+                                    new (NavigationHelper.RightFirstFirstRoutePath, View: views.FindByViewModel<RightFirstFirstModel>()),
+                                    new (NavigationHelper.RightFirstSecondRoutePath, View: views.FindByViewModel<RightFirstSecondModel>())
+                                ])
                             ]),
+                            
                             new (NavigationHelper.RightSecondRoutePath, View: views.FindByViewModel<RightSecondModel>())
                         ])
                     ])
