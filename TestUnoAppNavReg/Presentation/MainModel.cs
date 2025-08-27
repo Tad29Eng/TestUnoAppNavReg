@@ -22,13 +22,16 @@ public partial record MainModel
         Messenger = messenger;
         Logger = logger;
 
+        // Set default left panel 
+        Task.Run(() => ShowFirstCommandAsync(ct: default));
+
         // Common Toolkit MVVM Messenger
         Messenger.Register<MainModel, LeftFirstShowDetailMessage>(
             recipient: this,
-            handler: async (recipient, message) => await recipient.LeftFirstShowDetailMessage(message));
+            handler: async (recipient, message) => await recipient.LeftFirstShowDetailMessageReceived(message));
     }
 
-    private async ValueTask LeftFirstShowDetailMessage(LeftFirstShowDetailMessage message)
+    private async ValueTask LeftFirstShowDetailMessageReceived(LeftFirstShowDetailMessage message)
     {
         //_ = await Navigator.NavigateRouteAsync(
         //    this,
@@ -59,7 +62,7 @@ public partial record MainModel
             data: new DataPanel(Name: "ELFirst"),
             qualifier: Qualifiers.Nested,
             cancellation: ct);
-        
+
         // Right
         _ = await Navigator.NavigateViewModelAsync<RightFirstModel>(
             this,

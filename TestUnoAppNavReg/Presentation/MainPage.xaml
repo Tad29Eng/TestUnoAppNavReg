@@ -47,8 +47,11 @@
             </Grid.ColumnDefinitions>
 
             <!--Left-->
+            <!--Region.Name set in code behind-->
+            <!-- uen:Region.Name="LeftRegion" -->
+            <!-- uen:Region.Name="{x:Bind hlp:NavigationHelper.LeftRegionName}" not worked -->
             <ContentControl uen:Region.Attached="True"
-                            uen:Region.Name="LeftRegion"
+                            uen:Region.Name=""
                             Name="ConCtrlLeftRegion"
                             Grid.Column="0"
                             HorizontalContentAlignment="Stretch"
@@ -59,8 +62,11 @@
                                 HorizontalAlignment="Stretch" />
 
             <!--Right-->
+            <!--Region.Name set in code behind-->
+            <!--uen:Region.Name="RightRegion"-->
+            <!--uen:Region.Name="{x:Bind hlp:NavigationHelper.RightRegionName}" not worked -->
             <ContentControl uen:Region.Attached="True"
-                            uen:Region.Name="RightRegion"
+                            uen:Region.Name=""
                             Name="ConCtrlRightRegion"
                             Grid.Column="2"
                             HorizontalContentAlignment="Stretch"

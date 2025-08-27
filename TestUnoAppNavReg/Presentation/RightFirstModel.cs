@@ -3,12 +3,13 @@ using TestUnoAppNavReg.Messages;
 
 namespace TestUnoAppNavReg.Presentation;
 
-public partial record RightFirstModel(
-    Entity Entity,
-    INavigator Navigator,
-    IMessenger Messenger,
-    ILogger<LeftFirstModel> Logger)
+public partial record RightFirstModel
 {
+    private Entity Entity { get; }
+    private INavigator Navigator { get; }
+    private IMessenger Messenger { get; }
+    private ILogger<LeftFirstModel> Logger { get; }
+
     public IState<string> Title =>
         State<string>.Value(this, () => $"RightFirst - {Entity?.Name ?? "Empty"}");
 
@@ -18,6 +19,21 @@ public partial record RightFirstModel(
 
     public IState<EntityProperty> SelectedEntityProperty => State<EntityProperty>.Empty(this)
         .ForEach(action: SelectionChanged);
+
+    public RightFirstModel(
+        Entity entity,
+        INavigator navigator,
+        IMessenger messenger,
+        ILogger<LeftFirstModel> logger)
+    {
+        Entity = entity;
+        Navigator = navigator;
+        Messenger = messenger;
+        Logger = logger;
+
+        // Set default bottom panel 
+        Task.Run(() => ShowPropertyDetailAsync(entityProperty: null, ct: default));
+    }
 
     private async ValueTask<IImmutableList<EntityProperty>> LoadItemsAsync(CancellationToken ct)
     {
@@ -36,23 +52,32 @@ public partial record RightFirstModel(
         return await ValueTask.FromResult(items.ToImmutableList());
     }
 
+    private async ValueTask ShowPropertyDetailAsync(EntityProperty? entityProperty, CancellationToken ct)
+    {
+        Logger.LogInformation("RightFirstModel.ShowPropertyDetailAsync");
+
+        if (entityProperty == null)
+            return;
+
+        if (entityProperty.TypeName == "Second") {
+            _ = await Navigator.NavigateViewModelAsync<RightFirstSecondModel>(
+               this,
+               data: entityProperty,
+               qualifier: Qualifiers.Nested,
+               cancellation: ct);
+        } else {
+            _ = await Navigator.NavigateViewModelAsync<RightFirstFirstModel>(
+                this,
+                data: entityProperty,
+                qualifier: Qualifiers.Nested,
+                cancellation: ct);
+        }
+    }
+
     public async ValueTask SelectionChanged(EntityProperty? selectedProperty, CancellationToken ct)
     {
         Logger.LogInformation("RightFirstModel.SelectionChanged");
 
-        if (selectedProperty == null)
-            return;
-
-        if (selectedProperty.TypeName == "Second") {
-            _ = await Navigator.NavigateViewModelAsync<RightFirstSecondModel>(
-               this,
-               data: selectedProperty,
-               qualifier: Qualifiers.Nested);
-        } else {
-            _ = await Navigator.NavigateViewModelAsync<RightFirstFirstModel>(
-                this,
-                data: selectedProperty,
-                qualifier: Qualifiers.Nested);
-        }
+        await ShowPropertyDetailAsync(selectedProperty, ct);
     }
 }

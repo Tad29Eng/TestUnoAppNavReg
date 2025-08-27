@@ -57,7 +57,15 @@
                         Name="ConCtrlRightBottomRegion"
                         Grid.Row="2"
                         HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch" />
+                        VerticalContentAlignment="Stretch">
+
+            <TextBlock Text="Select property"
+                       Style="{StaticResource HeaderTextBlockStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0,0,0,0" />
+            
+        </ContentControl>
 
     </Grid>
 
